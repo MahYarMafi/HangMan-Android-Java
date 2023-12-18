@@ -45,31 +45,37 @@
                 <TextView
                     android:id="@+id/txt_A"
                     style="@style/LetterButton"
+                    android:tag="A"
                     android:text="A" />
 
                 <TextView
                     android:id="@+id/txt_B"
                     style="@style/LetterButton"
+                    android:tag="B"
                     android:text="B" />
 
                 <TextView
                     android:id="@+id/txt_C"
                     style="@style/LetterButton"
+                    android:tag="C"
                     android:text="C" />
 
                 <TextView
                     android:id="@+id/txt_D"
                     style="@style/LetterButton"
+                    android:tag="D"
                     android:text="D" />
 
                 <TextView
                     android:id="@+id/txt_E"
                     style="@style/LetterButton"
+                    android:tag="E"
                     android:text="E" />
 
                 <TextView
                     android:id="@+id/txt_F"
                     style="@style/LetterButton"
+                    android:tag="F"
                     android:text="F" />
 
             </LinearLayout>
@@ -83,31 +89,37 @@
                 <TextView
                     android:id="@+id/txt_G"
                     style="@style/LetterButton"
+                    android:tag="G"
                     android:text="G" />
 
                 <TextView
                     android:id="@+id/txt_H"
                     style="@style/LetterButton"
+                    android:tag="H"
                     android:text="H" />
 
                 <TextView
                     android:id="@+id/txt_I"
                     style="@style/LetterButton"
+                    android:tag="I"
                     android:text="I" />
 
                 <TextView
                     android:id="@+id/txt_J"
                     style="@style/LetterButton"
+                    android:tag="J"
                     android:text="J" />
 
                 <TextView
                     android:id="@+id/txt_K"
                     style="@style/LetterButton"
+                    android:tag="K"
                     android:text="K" />
 
                 <TextView
                     android:id="@+id/txt_L"
                     style="@style/LetterButton"
+                    android:tag="L"
                     android:text="L" />
 
             </LinearLayout>
@@ -121,31 +133,37 @@
                 <TextView
                     android:id="@+id/txt_M"
                     style="@style/LetterButton"
+                    android:tag="M"
                     android:text="M" />
 
                 <TextView
                     android:id="@+id/txt_N"
                     style="@style/LetterButton"
+                    android:tag="N"
                     android:text="N" />
 
                 <TextView
                     android:id="@+id/txt_O"
                     style="@style/LetterButton"
+                    android:tag="O"
                     android:text="O" />
 
                 <TextView
                     android:id="@+id/txt_P"
                     style="@style/LetterButton"
+                    android:tag="P"
                     android:text="P" />
 
                 <TextView
                     android:id="@+id/txt_Q"
                     style="@style/LetterButton"
+                    android:tag="Q"
                     android:text="Q" />
 
                 <TextView
                     android:id="@+id/txt_R"
                     style="@style/LetterButton"
+                    android:tag="R"
                     android:text="R" />
 
             </LinearLayout>
@@ -159,31 +177,37 @@
                 <TextView
                     android:id="@+id/txt_S"
                     style="@style/LetterButton"
+                    android:tag="S"
                     android:text="S" />
 
                 <TextView
                     android:id="@+id/txt_T"
                     style="@style/LetterButton"
+                    android:tag="T"
                     android:text="T" />
 
                 <TextView
                     android:id="@+id/txt_U"
                     style="@style/LetterButton"
+                    android:tag="U"
                     android:text="U" />
 
                 <TextView
                     android:id="@+id/txt_V"
                     style="@style/LetterButton"
+                    android:tag="V"
                     android:text="V" />
 
                 <TextView
                     android:id="@+id/txt_W"
                     style="@style/LetterButton"
+                    android:tag="W"
                     android:text="W" />
 
                 <TextView
                     android:id="@+id/txt_X"
                     style="@style/LetterButton"
+                    android:tag="X"
                     android:text="X" />
 
             </LinearLayout>
@@ -197,11 +221,13 @@
                 <TextView
                     android:id="@+id/txt_Y"
                     style="@style/LetterButton"
+                    android:tag="Y"
                     android:text="Y" />
 
                 <TextView
                     android:id="@+id/txt_Z"
                     style="@style/LetterButton"
+                    android:tag="Z"
                     android:text="Z" />
 
                 <TextView
