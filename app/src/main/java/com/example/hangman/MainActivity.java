@@ -2,9 +2,11 @@ package com.example.hangman;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,11 +14,15 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     String dashedWord = "";
+    int failCount = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String word = selectWord().toLowerCase();
+        String word = selectWord();
+        Log.i("test",word);
 
         for (int i = 0; i < word.length(); i++) {
             if (word.charAt(i) != ' ') {
@@ -25,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
                 dashedWord += " ";
             }
         }
+
+
         TextView txt_A = (TextView) findViewById(R.id.txt_A);
         TextView txt_B = (TextView) findViewById(R.id.txt_B);
         TextView txt_C = (TextView) findViewById(R.id.txt_C);
@@ -54,36 +62,85 @@ public class MainActivity extends AppCompatActivity {
         TextView txt_Z = (TextView) findViewById(R.id.txt_Z);
         // Define textView txtWord
         TextView txtWord = (TextView) findViewById(R.id.txtWord);
+        // Define ImageView imgFace
+        ImageView imgFace = (ImageView) findViewById(R.id.imgFace);
+        imgFace.setImageResource(R.drawable.face_1);
 
         txtWord.setText(dashedWord);
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+           //     Log.i("test", "Word contains " );
+
                 TextView txtView = (TextView) view;
                 String id = txtView.getResources().getResourceEntryName(txtView.getId());
-                id = id.replace("txt_", "").toLowerCase();
-                char idChar = id.charAt(0);
-                Toast.makeText(MainActivity.this, "BUTTON  " + id + " CLICKED", Toast.LENGTH_LONG).show();
-                if (word.contains(id)) {
-                    Log.i("test", word + " contains " + id + ".");
+                String letter = id.replace("txt_", "").toLowerCase();
+                char idChar = letter.charAt(0);
 
-                    txtView.setVisibility(View.INVISIBLE);
-                    for (int i = 0; i < word.length(); i++) {
-                        if (word.charAt(i) == idChar) {
-                            Log.i("test", "Found at index: " + i);
+                String wordLoweredCase = word.toLowerCase();
+                if (wordLoweredCase.contains(letter)) {
+                    for (int i = 0; i < wordLoweredCase.length(); i++) {
+                        if (wordLoweredCase.charAt(i) == idChar) {
                             char[] wordDashedCharArray = dashedWord.toCharArray();
-                            wordDashedCharArray[i] = idChar;
+                            wordDashedCharArray[i] = word.charAt(i);
                             dashedWord = new String(wordDashedCharArray);
                             txtWord.setText(dashedWord);
+                            if (!dashedWord.contains("-")) {
+                                Intent intent = new Intent(MainActivity.this, FinishActivity.class);
+                                intent.putExtra("result", "WON");
+                                startActivity(intent);
+                                finish();
+                              //  return;
+                            }
                         }
 
                     }
                 } else {
-                    Log.i("test", word + " does not contain " + id + ".");
+                    int imageId = R.drawable.face_1;
+                    failCount++;
+
+
+
+                    switch (failCount) {
+                        case 1:
+                            imageId = R.drawable.face_2;
+                            break;
+                        case 2:
+                            imageId = R.drawable.face_3;
+                            break;
+                        case 3:
+                            imageId = R.drawable.face_4;
+                            break;
+                        case 4:
+                            imageId = R.drawable.face_5;
+                            break;
+                        case 5:
+                            imageId = R.drawable.face_6;
+                            break;
+                        case 6:
+                            imageId = R.drawable.face_7;
+                            break;
+                        case 7:
+                            imageId = R.drawable.face_8;
+                            break;
+                        case 8:
+                            imageId = R.drawable.face_9;
+                            break;
+                    }
+                    imgFace.setImageResource(imageId);
+
+                    if (failCount >= 8) {
+                        //   imgFace.setImageResource(R.drawable.face_9);
+                        Intent intent = new Intent(MainActivity.this, FinishActivity.class);
+                        intent.putExtra("result", "LOST");
+                        startActivity(intent);
+                        finish();
+                    }
+
 
                 }
-
+                txtView.setVisibility(View.INVISIBLE);
             }
         };
 
@@ -118,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String selectWord() {
-        return "Adrien Kord mafi";
+        String[] words = {"Android Studio", "Polymorphism", "Encapsulation", "Interface", "Composition", "Development", "Programming", "Web Design", "Research", "Google", "Refactoring", "Renaming", "Documentation","Object Oriented"};
+
+        int randomIndex = (int) (Math.random() * words.length+1);
+        return words[randomIndex];
     }
 }
