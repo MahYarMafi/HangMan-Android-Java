@@ -16,23 +16,17 @@ public class MainActivity extends AppCompatActivity {
     String dashedWord = "";
     int failCount = 0;
 
+    TextView txtWord;
+    ImageView imgFace;
+    String selectedWord = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String word = selectWord();
-        Log.i("test",word);
-
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) != ' ') {
-                dashedWord += "-";
-            } else {
-                dashedWord += " ";
-            }
-        }
 
 
+        // define java pointers to UI elements
         TextView txt_A = (TextView) findViewById(R.id.txt_A);
         TextView txt_B = (TextView) findViewById(R.id.txt_B);
         TextView txt_C = (TextView) findViewById(R.id.txt_C);
@@ -60,91 +54,26 @@ public class MainActivity extends AppCompatActivity {
         TextView txt_X = (TextView) findViewById(R.id.txt_X);
         TextView txt_Y = (TextView) findViewById(R.id.txt_Y);
         TextView txt_Z = (TextView) findViewById(R.id.txt_Z);
-        // Define textView txtWord
-        TextView txtWord = (TextView) findViewById(R.id.txtWord);
-        // Define ImageView imgFace
-        ImageView imgFace = (ImageView) findViewById(R.id.imgFace);
-        imgFace.setImageResource(R.drawable.face_1);
+        txtWord = (TextView) findViewById(R.id.txtWord);
+        imgFace = (ImageView) findViewById(R.id.imgFace);
 
+        //select word and store dashed version
+        selectedWord = selectWord();
+        dashedWord = getDashedWord(selectedWord);
+
+        //initialize UI
+        imgFace.setImageResource(R.drawable.face_1);
         txtWord.setText(dashedWord);
 
+        //define general virtual keyboard listener.
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-           //     Log.i("test", "Word contains " );
-
-                TextView txtView = (TextView) view;
-                String id = txtView.getResources().getResourceEntryName(txtView.getId());
-                String letter = id.replace("txt_", "").toLowerCase();
-                char idChar = letter.charAt(0);
-
-                String wordLoweredCase = word.toLowerCase();
-                if (wordLoweredCase.contains(letter)) {
-                    for (int i = 0; i < wordLoweredCase.length(); i++) {
-                        if (wordLoweredCase.charAt(i) == idChar) {
-                            char[] wordDashedCharArray = dashedWord.toCharArray();
-                            wordDashedCharArray[i] = word.charAt(i);
-                            dashedWord = new String(wordDashedCharArray);
-                            txtWord.setText(dashedWord);
-                            if (!dashedWord.contains("-")) {
-                                Intent intent = new Intent(MainActivity.this, FinishActivity.class);
-                                intent.putExtra("result", "WON");
-                                startActivity(intent);
-                                finish();
-                              //  return;
-                            }
-                        }
-
-                    }
-                } else {
-                    int imageId = R.drawable.face_1;
-                    failCount++;
-
-
-
-                    switch (failCount) {
-                        case 1:
-                            imageId = R.drawable.face_2;
-                            break;
-                        case 2:
-                            imageId = R.drawable.face_3;
-                            break;
-                        case 3:
-                            imageId = R.drawable.face_4;
-                            break;
-                        case 4:
-                            imageId = R.drawable.face_5;
-                            break;
-                        case 5:
-                            imageId = R.drawable.face_6;
-                            break;
-                        case 6:
-                            imageId = R.drawable.face_7;
-                            break;
-                        case 7:
-                            imageId = R.drawable.face_8;
-                            break;
-                        case 8:
-                            imageId = R.drawable.face_9;
-                            break;
-                    }
-                    imgFace.setImageResource(imageId);
-
-                    if (failCount >= 8) {
-                        //   imgFace.setImageResource(R.drawable.face_9);
-                        Intent intent = new Intent(MainActivity.this, FinishActivity.class);
-                        intent.putExtra("result", "LOST");
-                        startActivity(intent);
-                        finish();
-                    }
-
-
-                }
-                txtView.setVisibility(View.INVISIBLE);
+                processKey(view);
             }
         };
 
-
+        //assign listener to UI virtual keyboard
         txt_A.setOnClickListener(listener);
         txt_B.setOnClickListener(listener);
         txt_C.setOnClickListener(listener);
@@ -175,9 +104,90 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private String selectWord() {
-        String[] words = {"Android Studio", "Polymorphism", "Encapsulation", "Interface", "Composition", "Development", "Programming", "Web Design", "Research", "Google", "Refactoring", "Renaming", "Documentation","Object Oriented"};
+        String[] words = {"Android Studio", "Polymorphism", "Encapsulation", "Interface", "Composition", "Development", "Programming", "Web Design", "Research", "Google", "Refactoring", "Renaming", "Documentation", "Object Oriented"};
 
-        int randomIndex = (int) (Math.random() * words.length+1);
+        int randomIndex = (int) (Math.random() * words.length + 1);
         return words[randomIndex];
+    }
+
+    private String getDashedWord(String word) {
+        String dashed = "";
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) != ' ') {
+                dashed += "-";
+            } else {
+                dashed += " ";
+            }
+        }
+        return dashed;
+    }
+
+    private void processKey(View view) {
+
+        TextView txtView = (TextView) view;
+
+        String id = getIdAsString(txtView);
+        String letter = id.replace("txt_", "").toLowerCase();
+        char idChar = letter.charAt(0);
+
+        String wordLowerCase = selectedWord.toLowerCase();
+        if (wordLowerCase.contains(letter)) {
+            for (int i = 0; i < wordLowerCase.length(); i++) {
+                if (wordLowerCase.charAt(i) == idChar) {
+                    dashedWord = replaceChar(dashedWord, i, selectedWord.charAt(i));
+                    txtWord.setText(dashedWord);
+                    if (!dashedWord.contains("-")) {
+                        winGame();
+                        return;
+                    }
+                }
+            }
+        } else {
+            int imageId = R.drawable.face_1;
+            failCount++;
+
+            switch (failCount) {
+                case 1: imageId = R.drawable.face_2; break;
+                case 2: imageId = R.drawable.face_3; break;
+                case 3: imageId = R.drawable.face_4; break;
+                case 4: imageId = R.drawable.face_5; break;
+                case 5: imageId = R.drawable.face_6; break;
+                case 6: imageId = R.drawable.face_7; break;
+                case 7: imageId = R.drawable.face_8; break;
+                case 8: imageId = R.drawable.face_9; break;
+            }
+            imgFace.setImageResource(imageId);
+
+            if (failCount >= 8) {
+                lostGame();
+            }
+        }
+        txtView.setVisibility(View.INVISIBLE);
+    }
+
+    private String getIdAsString(View view) {
+        //Convert ID as integer to ID as String
+        String id = view.getResources().getResourceEntryName(view.getId());
+        return id;
+    }
+
+    public void winGame() {
+        Intent intent = new Intent(MainActivity.this, FinishActivity.class);
+        intent.putExtra("result", "WON");
+        startActivity(intent);
+        finish();
+    }
+
+    public void lostGame() {
+        Intent intent = new Intent(MainActivity.this, FinishActivity.class);
+        intent.putExtra("result", "LOST");
+        startActivity(intent);
+        finish();
+    }
+
+    private String replaceChar(String target, int index, char newChar) {
+        char[] charArray = target.toCharArray();
+        charArray[index] = newChar;
+        return new String(charArray);
     }
 }
